@@ -81,7 +81,7 @@ resource "azurerm_linux_virtual_machine" "vm" {
   disable_password_authentication = true
   admin_ssh_key {
     username   = "fuatu"
-    public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC9X1R/5/OWV7LpabWsEzqAfMwG5fO2UDN/aZgWqB3Gv+Hl1Q2+gB09WZBy8R+R/yvgldhHePKtTFo+H9chHTPcE4Y4CJ4MP4/o1x+Zghc5N5y9nIyCl/wYscgN8UVITbLwNZzF2q3qrpzbWTTtIbM+9XjKp/e1aJnRcHzeZwLjZTX+xqO3LnGJl/Fx+D9XK34OvY1WJGdok+PHfhjKtKYJfTW0W5cFk5I5+9C5D0ekYi5C1ZIwKZoQ+7xEKjKe/8ySxJmjXc2hjvY/fW+JR8aJ4ZnGOKN7ypkwLslbR8sVfDm9YYgl3qQQCzT2m7ahZTzHm+Bkxn0vU+jW6Sx fuatu@mycomputer"
+    public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDdOgHn70smnYAD1ceyyyItf3oQ+zyZCh2wy/OmnrBYbpEc2a44dT1qKPQAFyDNDxa777WWXlWCpLEhBHhRBvOAjRF434JbP1iUsJyOBDav1OuGVgFxfOcBwaHdcHd9r2WKssqI/b4tnrOgh3bFMkKSN5k9BxmRfiS90w2qW5cOWybWjNq7+rw3nihI9rIFHNnQ5BCd1+oFHmlyanhW5fHne6WFlPCQl9HmLiiN9luwQRGLIgJDYusuQ21ujkhU5z1XGEoVV5BD0+Hq1mK2XFbiAapebuyeaQH0/VCmophdL4I6EfLE3W5eXfT/kYEblJ9/RSQawVY1qA9eUMuF3Jk/ fuatulugay@Fuats-MacBook-Pro.local"
   }
 
   network_interface_ids = [
