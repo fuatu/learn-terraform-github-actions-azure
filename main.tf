@@ -73,12 +73,16 @@ resource "azurerm_network_interface" "nic" {
 }
 
 resource "azurerm_linux_virtual_machine" "vm" {
-  name                = "terraform-experiment"
-  location            = azurerm_resource_group.rg.location
-  resource_group_name = azurerm_resource_group.rg.name
-  size                = "Standard_B1ls"
-  admin_username      = "fuatu"
-  admin_password      = "yLLXdMtP67mWqb"
+  name                            = "terraform-experiment"
+  location                        = azurerm_resource_group.rg.location
+  resource_group_name             = azurerm_resource_group.rg.name
+  size                            = "Standard_B1ls"
+  admin_username                  = "fuatu"
+  disable_password_authentication = true
+  admin_ssh_key {
+    username   = "fuatu"
+    public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDdOgHn70smnYAD1ceyyyItf3oQ+zyZCh2wy/OmnrBYbpEc2a44dT1qKPQAFyDNDxa777WWXlWCpLEhBHhRBvOAjRF434JbP1iUsJyOBDav1OuGVgFxfOcBwaHdcHd9r2WKssqI/b4tnrOgh3bFMkKSN5k9BxmRfiS90w2qW5cOWybWjNq7+rw3nihI9rIFHNnQ5BCd1+oFHmlyanhW5fHne6WFlPCQl9HmLiiN9luwQRGLIgJDYusuQ21ujkhU5z1XGEoVV5BD0+Hq1mK2XFbiAapebuyeaQH0/VCmophdL4I6EfLE3W5eXfT/kYEblJ9/RSQawVY1qA9eUMuF3Jk/ fuatulugay@Fuats-MacBook-Pro.local"
+  }
 
   network_interface_ids = [
     azurerm_network_interface.nic.id,
