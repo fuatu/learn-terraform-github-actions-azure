@@ -78,7 +78,11 @@ resource "azurerm_linux_virtual_machine" "vm" {
   resource_group_name = azurerm_resource_group.rg.name
   size                = "Standard_B1ls"
   admin_username      = "fuatu"
-  admin_password      = "yLLXdMtP67mWqb"
+  disable_password_authentication = true
+  admin_ssh_key {
+    username = "fuatu"
+    public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC9X1R/5/OWV7LpabWsEzqAfMwG5fO2UDN/aZgWqB3Gv+Hl1Q2+gB09WZBy8R+R/yvgldhHePKtTFo+H9chHTPcE4Y4CJ4MP4/o1x+Zghc5N5y9nIyCl/wYscgN8UVITbLwNZzF2q3qrpzbWTTtIbM+9XjKp/e1aJnRcHzeZwLjZTX+xqO3LnGJl/Fx+D9XK34OvY1WJGdok+PHfhjKtKYJfTW0W5cFk5I5+9C5D0ekYi5C1ZIwKZoQ+7xEKjKe/8ySxJmjXc2hjvY/fW+JR8aJ4ZnGOKN7ypkwLslbR8sVfDm9YYgl3qQQCzT2m7ahZTzHm+Bkxn0vU+jW6Sx fuatu@mycomputer"
+  }
 
   network_interface_ids = [
     azurerm_network_interface.nic.id,
