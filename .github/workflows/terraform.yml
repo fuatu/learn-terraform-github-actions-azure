@@ -48,6 +48,7 @@ jobs:
 
           # Filter the list to include only the directories that contain the main.tf file
           DIRS=$(echo "$CHANGED_FILES" | grep -E '^.+/main\.tf$' | xargs -I {} dirname {} | sort | uniq)
+          echo "$DIRS"
 
           # Run Terraform plan in each directory that contains the main.tf file
           for DIR in $DIRS; do
