@@ -46,7 +46,7 @@ jobs:
         #run: terraform plan -no-color -input=false
         run: |
           # Get the list of files that were changed in the latest commit
-          CHANGED_FILES=$(git diff --name-only HEAD^ "${{ latest_commit.outputs.commit_hash }}")
+          CHANGED_FILES=$(git diff --name-only HEAD^ "${{ steps.latest_commit.outputs.commit_hash }}")
           echo "CHANGED_FILES"
           echo "$CHANGED_FILES"
 
