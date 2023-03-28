@@ -16,8 +16,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
         with:
-          fetch-depth: 0
-      - run: git checkout HEAD^
+          ref: ${{ github.event.pull_request.head.sha }}
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
@@ -43,8 +42,8 @@ jobs:
         #run: terraform plan -no-color -input=false
         run: |
           # Get the list of files that were changed in the latest commit
-          # CHANGED_FILES=$(git diff --no-commit-id --name-only -r HEAD^..HEAD)
-          CHANGED_FILES=$(git diff --name-only HEAD^ HEAD)
+          echo "::set-output name=commit_hash::${{ github.event.pull_request.head.sha }}"
+          CHANGED_FILES=$(git diff --name-only HEAD^ "${{ steps.latest_commit.outputs.commit_hash }}")
           echo "CHANGED_FILES"
           echo "$CHANGED_FILES"
 
