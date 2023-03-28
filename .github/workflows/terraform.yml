@@ -37,7 +37,18 @@ jobs:
       - name: Terraform Plan
         id: plan
         if: github.event_name == 'pull_request'
-        run: terraform plan -no-color -input=false
+        #run: terraform plan -no-color -input=false
+        run: |
+          # Get the list of files that were changed in the latest commit
+          CHANGED_FILES=$(git diff --name-only HEAD^ HEAD)
+
+          # Filter the list to include only the directories that contain the main.tf file
+          DIRS=$(echo "$CHANGED_FILES" | grep -E '^.+/main\.tf$' | xargs -I {} dirname {} | sort | uniq)
+
+          # Run Terraform plan in each directory that contains the main.tf file
+          for DIR in $DIRS; do
+            terraform plan -no-color -input=false -chdir="$DIR"
+          done
         continue-on-error: true
 
       - name: Update Pull Request
