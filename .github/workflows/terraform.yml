@@ -45,10 +45,12 @@ jobs:
           # Get the list of files that were changed in the latest commit
           # CHANGED_FILES=$(git diff --no-commit-id --name-only -r HEAD^..HEAD)
           CHANGED_FILES=$(git diff --name-only HEAD^ HEAD)
+          echo "CHANGED_FILES"
           echo "$CHANGED_FILES"
 
           # Filter the list to include only the directories that contain the main.tf file
           DIRS=$(echo "$CHANGED_FILES" | grep -E '^.+/main\.tf$' | xargs -I {} dirname {} | sort | uniq)
+          echo "DIRS"
           echo "$DIRS"
 
           # Run Terraform plan in each directory that contains the main.tf file
