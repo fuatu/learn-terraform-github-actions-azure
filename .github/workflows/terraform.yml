@@ -51,6 +51,7 @@ jobs:
 
           # Run Terraform plan in each directory that contains the main.tf file
           for DIR in $DIRS; do
+            echo "$DIR"
             terraform plan -no-color -input=false -chdir="$DIR"
           done
         continue-on-error: true
