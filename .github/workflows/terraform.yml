@@ -13,8 +13,6 @@ jobs:
     permissions:
       pull-requests: write
     steps:
-      - name: Set debug level
-        run: echo "::set-env name=MY_ENV_VAR::debug" 
       - name: Checkout
         uses: actions/checkout@v3
         with:
