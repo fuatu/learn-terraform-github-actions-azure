@@ -101,5 +101,5 @@ resource "azurerm_linux_virtual_machine" "vm" {
     version   = "20.04.202303220"
   }
 
-  computer_name = "terraformvm-testx2"
+  computer_name = "terraformvm-test2"
 }
