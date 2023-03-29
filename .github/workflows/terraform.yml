@@ -15,29 +15,89 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      
+
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v35.7.8
+
+      - name: Get directories
+        id: directories
+        run: |
+          # Get the list of files that were changed in the latest commit
+          CHANGED_FILES="${{ steps.changed-files.outputs.all_changed_files }}"
+          echo "CHANGED_FILES"
+          echo "$CHANGED_FILES"
+
+          # Filter the list to include only the directories that contain the main.tf file
+          DIRS=$(echo $CHANGED_FILES | tr -s ' ' '\n' | grep -E '^.+/main\.tf$' | xargs -I {} dirname {} | sort | uniq)
+          echo "DIRS"
+          echo "$DIRS"
+          echo "::set-output name=dirs::$(echo $DIRS)"
+          
+          CURRENT_DIR=$( pwd )
+          echo "Current dir: $CURRENT_DIR"
+          echo "::set-output name=current::$(echo $CURRENT_DIR)"
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
         with:
           # terraform_version: 1.4.2
           cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+          fetch-depth: 0
 
       - name: Terraform Format
         id: fmt
-        run: terraform fmt -check
+        run: |
+          for DIR in ${{ steps.directories.outputs.dirs }}; do
+            echo "Dir to format: $DIR"
+            cd "${{ steps.directories.outputs.current }}"
+            cd "$DIR"
+            terraform fmt -check
+          done
+        
 
       - name: Terraform Init
         id: init
-        run: terraform init
+        run: |
+          for DIR in ${{ steps.directories.outputs.dirs }}; do
+            echo "Dir to init: $DIR"
+            cd "${{ steps.directories.outputs.current }}"
+            cd "$DIR"
+            terraform init 
+          done
+          
       
       - name: Terraform Validate
         id: validate
-        run: terraform validate -no-color
+        run: |
+          for DIR in ${{ steps.directories.outputs.dirs }}; do
+            echo "Dir to validate: $DIR"
+            cd "${{ steps.directories.outputs.current }}"
+            cd "$DIR"
+            terraform validate -no-color
+          done
+        
 
       - name: Terraform Plan
         id: plan
         if: github.event_name == 'pull_request'
-        run: terraform plan -no-color -input=false
+        #run: terraform plan -no-color -input=false
+        run: |
+          echo "directories: ${{ steps.directories.outputs.dirs }}""
+          echo "current dir: ${{ steps.directories.outputs.current }}""
+
+          # Run Terraform plan in each directory that contains the main.tf file
+          
+
+          for DIR in ${{ steps.directories.outputs.dirs }}; do
+            echo "Dir to plan: $DIR"
+            cd "${{ steps.directories.outputs.current }}"
+            cd "$DIR"
+            terraform plan -no-color -input=false 
+          done
         continue-on-error: true
 
       - name: Update Pull Request
@@ -74,6 +134,6 @@ jobs:
         if: steps.plan.outcome == 'failure'
         run: exit 1
 
-      - name: Terraform Apply
-        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-        run: terraform apply -auto-approve -input=false
+#      - name: Terraform Apply
+#        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+#        run: terraform apply -auto-approve -input=false
