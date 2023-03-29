@@ -60,11 +60,25 @@ jobs:
 
       - name: Terraform Init
         id: init
-        run: terraform init
+        run: |
+          for DIR in ${{ steps.directories.outputs.dirs }}; do
+            echo "Dir to plan: $DIR"
+            cd "${{ steps.directories.outputs.current }}"
+            cd "$DIR"
+            terraform init 
+          done
+          
       
       - name: Terraform Validate
         id: validate
-        run: terraform validate -no-color
+        run: |
+          for DIR in ${{ steps.directories.outputs.dirs }}; do
+            echo "Dir to plan: $DIR"
+            cd "${{ steps.directories.outputs.current }}"
+            cd "$DIR"
+            terraform validate -no-color
+          done
+        
 
       - name: Terraform Plan
         id: plan
@@ -73,13 +87,13 @@ jobs:
         run: |
           echo "directories: ${{ steps.directories.outputs.dirs }}""
           echo "current dir: ${{ steps.directories.outputs.current }}""
-          
+
           # Run Terraform plan in each directory that contains the main.tf file
           
 
           for DIR in ${{ steps.directories.outputs.dirs }}; do
             echo "Dir to plan: $DIR"
-            cd "$CURRENT_DIR"
+            cd "${{ steps.directories.outputs.current }}"
             cd "$DIR"
             #terraform plan -no-color -input=false 
           done
