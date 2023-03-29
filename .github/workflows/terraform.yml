@@ -41,12 +41,6 @@ jobs:
           echo "Current dir: $CURRENT_DIR"
           echo "::set-output name=current::$(echo $CURRENT_DIR)"
 
-      - name: List all changed files
-        run: |
-          for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
-            echo "$file was changed"
-          done
-
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
         with:
@@ -56,13 +50,20 @@ jobs:
 
       - name: Terraform Format
         id: fmt
-        run: terraform fmt -check
+        run: |
+          for DIR in ${{ steps.directories.outputs.dirs }}; do
+            echo "Dir to format: $DIR"
+            cd "${{ steps.directories.outputs.current }}"
+            cd "$DIR"
+            terraform fmt -check
+          done
+        
 
       - name: Terraform Init
         id: init
         run: |
           for DIR in ${{ steps.directories.outputs.dirs }}; do
-            echo "Dir to plan: $DIR"
+            echo "Dir to init: $DIR"
             cd "${{ steps.directories.outputs.current }}"
             cd "$DIR"
             terraform init 
@@ -73,7 +74,7 @@ jobs:
         id: validate
         run: |
           for DIR in ${{ steps.directories.outputs.dirs }}; do
-            echo "Dir to plan: $DIR"
+            echo "Dir to validate: $DIR"
             cd "${{ steps.directories.outputs.current }}"
             cd "$DIR"
             terraform validate -no-color
@@ -95,7 +96,7 @@ jobs:
             echo "Dir to plan: $DIR"
             cd "${{ steps.directories.outputs.current }}"
             cd "$DIR"
-            #terraform plan -no-color -input=false 
+            terraform plan -no-color -input=false 
           done
         continue-on-error: true
 
