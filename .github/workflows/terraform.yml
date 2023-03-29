@@ -136,4 +136,12 @@ jobs:
 
       - name: Terraform Apply
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-        run: terraform apply -auto-approve -input=false
+        run: |
+          for DIR in ${{ steps.directories.outputs.dirs }}; do
+            echo "Dir to apply: $DIR"
+            cd "${{ steps.directories.outputs.current }}"
+            cd "$DIR"
+            terraform apply -auto-approve -input=false
+          done
+        
+        
