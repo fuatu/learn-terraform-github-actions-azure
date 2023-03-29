@@ -66,7 +66,7 @@ jobs:
 
           # Run Terraform plan in each directory that contains the main.tf file
           CURRENT_DIR=$( pwd )
-          echo "Current dir: "$CURRENT_DIR"
+          echo "Current dir: $CURRENT_DIR"
 
           for DIR in $DIRS; do
             echo "Dir to plan: $DIR"
