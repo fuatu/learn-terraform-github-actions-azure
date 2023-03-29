@@ -55,12 +55,12 @@ jobs:
         #run: terraform plan -no-color -input=false
         run: |
           # Get the list of files that were changed in the latest commit
-          CHANGED_FILES=${{ steps.changed-files.outputs.all_changed_files }}
+          CHANGED_FILES="${{ steps.changed-files.outputs.all_changed_files }}"
           echo "CHANGED_FILES"
           echo "$CHANGED_FILES"
 
           # Filter the list to include only the directories that contain the main.tf file
-          DIRS=$(echo "$CHANGED_FILES" | grep -E '^.+/main\.tf$' | xargs -I {} dirname {} | sort | uniq)
+          DIRS=$(echo $CHANGED_FILES | tr -s ' ' '\n' | grep -E '^.+/main\.tf$' | xargs -I {} dirname {} | sort | uniq)
           echo "DIRS"
           echo "$DIRS"
 
