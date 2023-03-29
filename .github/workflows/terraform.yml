@@ -65,9 +65,14 @@ jobs:
           echo "$DIRS"
 
           # Run Terraform plan in each directory that contains the main.tf file
+          CURRENT_DIR=$( pwd )
+          echo "Current dir: "$CURRENT_DIR"
+
           for DIR in $DIRS; do
-            echo "$DIR"
-            terraform plan -chdir="$DIR" -no-color -input=false 
+            echo "Dir to plan: $DIR"
+            cd "$CURRENT_DIR"
+            cd "$DIR"
+            terraform plan -no-color -input=false 
           done
         continue-on-error: true
 
