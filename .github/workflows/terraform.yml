@@ -23,7 +23,24 @@ jobs:
         id: changed-files
         uses: tj-actions/changed-files@v35.7.8
 
-      
+      - name: Get directories
+        id: directories
+        run: |
+          # Get the list of files that were changed in the latest commit
+          CHANGED_FILES="${{ steps.changed-files.outputs.all_changed_files }}"
+          echo "CHANGED_FILES"
+          echo "$CHANGED_FILES"
+
+          # Filter the list to include only the directories that contain the main.tf file
+          DIRS=$(echo $CHANGED_FILES | tr -s ' ' '\n' | grep -E '^.+/main\.tf$' | xargs -I {} dirname {} | sort | uniq)
+          echo "DIRS"
+          echo "$DIRS"
+          echo "::set-output name=dirs::$(echo $DIRS)"
+          
+          CURRENT_DIR=$( pwd )
+          echo "Current dir: $CURRENT_DIR"
+          echo "::set-output name=current::$(echo $CURRENT_DIR)"
+
       - name: List all changed files
         run: |
           for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
@@ -40,6 +57,10 @@ jobs:
       - name: Terraform Format
         id: fmt
         run: terraform fmt -check
+
+      - name: Terraform Init
+        id: init
+        run: terraform init
       
       - name: Terraform Validate
         id: validate
@@ -50,26 +71,17 @@ jobs:
         if: github.event_name == 'pull_request'
         #run: terraform plan -no-color -input=false
         run: |
-          # Get the list of files that were changed in the latest commit
-          CHANGED_FILES="${{ steps.changed-files.outputs.all_changed_files }}"
-          echo "CHANGED_FILES"
-          echo "$CHANGED_FILES"
-
-          # Filter the list to include only the directories that contain the main.tf file
-          DIRS=$(echo $CHANGED_FILES | tr -s ' ' '\n' | grep -E '^.+/main\.tf$' | xargs -I {} dirname {} | sort | uniq)
-          echo "DIRS"
-          echo "$DIRS"
-
+          echo "directories: ${{ steps.directories.outputs.dirs }}""
+          echo "current dir: ${{ steps.directories.outputs.current }}""
+          
           # Run Terraform plan in each directory that contains the main.tf file
-          CURRENT_DIR=$( pwd )
-          echo "Current dir: $CURRENT_DIR"
+          
 
-          for DIR in $DIRS; do
+          for DIR in ${{ steps.directories.outputs.dirs }}; do
             echo "Dir to plan: $DIR"
             cd "$CURRENT_DIR"
             cd "$DIR"
-            terraform init
-            terraform plan -no-color -input=false 
+            #terraform plan -no-color -input=false 
           done
         continue-on-error: true
 
