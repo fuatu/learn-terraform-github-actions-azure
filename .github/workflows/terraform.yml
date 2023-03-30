@@ -49,12 +49,12 @@ jobs:
           cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
           fetch-depth: 0
       
-      - name: Install Azure CLI
+      - name: Install Azure CLI and login
         run: |
           curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+          az login --service-principal --username secrets.CLIENT_ID --password secrets.PASSWORD --tenant secrets.TENANT
 
       - name: Azure Login
-        uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
