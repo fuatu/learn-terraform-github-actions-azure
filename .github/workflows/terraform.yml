@@ -53,6 +53,8 @@ jobs:
         run: |
           whoami
           curl -sL https://aka.ms/InstallAzureCLIDeb | bash
+        options:
+          root: true
 
       - name: Azure Login
         uses: azure/login@v1
