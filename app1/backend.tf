@@ -1,5 +1,5 @@
 terraform {
-  
+
   backend "azurerm" {
     resource_group_name  = "FuatExperiments"
     storage_account_name = "terraformtestff"
