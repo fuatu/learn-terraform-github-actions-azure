@@ -41,12 +41,7 @@ jobs:
           echo "Current dir: $CURRENT_DIR"
           echo "::set-output name=current::$(echo $CURRENT_DIR)"
 
-      - name: Azure Login
-        uses: azure/login@v1
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-          
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
         with:
@@ -54,6 +49,12 @@ jobs:
           cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
           fetch-depth: 0
 
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+          
       - name: Terraform Format
         id: fmt
         run: |
