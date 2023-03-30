@@ -54,11 +54,6 @@ jobs:
           curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
           az login --service-principal --username secrets.CLIENT_ID --password secrets.PASSWORD --tenant secrets.TENANT
 
-      - name: Azure Login
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
-
-
       - name: Terraform Format
         id: fmt
         run: |
