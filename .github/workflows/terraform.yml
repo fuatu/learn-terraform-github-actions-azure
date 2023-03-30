@@ -52,7 +52,7 @@ jobs:
       - name: Install Azure CLI and login
         run: |
           curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
-          az login --service-principal --username secrets.CLIENT_ID --password secrets.PASSWORD --tenant secrets.TENANT
+          az login --service-principal --username ${{ secrets.CLIENT_ID }} --password ${{ secrets.PASSWORD }} --tenant ${{ secrets.TENANT }}
 
       - name: Terraform Format
         id: fmt
