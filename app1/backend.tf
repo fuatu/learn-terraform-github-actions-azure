@@ -20,12 +20,12 @@ terraform {
   }
   required_version = ">= 1.1.0"
 
-  cloud {
-    organization = "testimg"
+#  cloud {
+#    organization = "testimg"
 
-    workspaces {
-      name = "learn-terraform-github-actions-azure"
-    }
-  }
+#    workspaces {
+#      name = "learn-terraform-github-actions-azure"
+#    }
+#  }
 }
 
