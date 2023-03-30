@@ -49,11 +49,6 @@ jobs:
           cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
           fetch-depth: 0
       
-      - name: Set up Azure CLI
-        uses: Azure/cli@v1
-        with:
-          inlineScript: |
-            curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
 
       - name: Azure Login
         uses: azure/login@v1
