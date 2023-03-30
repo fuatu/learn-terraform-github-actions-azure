@@ -49,6 +49,10 @@ jobs:
           cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
           fetch-depth: 0
       
+      - name: Install Azure CLI
+        run: |
+          whoami
+          curl -sL https://aka.ms/InstallAzureCLIDeb | bash
 
       - name: Azure Login
         uses: azure/login@v1
