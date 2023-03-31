@@ -4,7 +4,7 @@ env:
   ARM_CLIENT_ID: ${{ secrets.CLIENT_ID }}
   ARM_CLIENT_SECRET: ${{ secrets.PASSWORD }}
   ARM_TENANT_ID: ${{ secrets.TENANT }}
-  #ARM_SUBSCRIPTION_ID: ${{ secrets.SUBSCRIPTION_ID }}
+  ARM_SUBSCRIPTION_ID: ${{ secrets.SUBSCRIPTION_ID }}
 
 on:
   push:
