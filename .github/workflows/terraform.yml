@@ -8,6 +8,11 @@ on:
 
 jobs:
   terraform:
+    env:
+       ARM_CLIENT_ID="${{ secrets.CLIENT_ID }}"
+       ARM_CLIENT_SECRET="${{ secrets.PASSWORD }}"
+       ARM_TENANT_ID="${{ secrets.TENANT }}"
+       ARM_SUBSCRIPTION_ID="${{ secrets.SUBSCRIPTION_ID }}"
     name: "Terraform"
     runs-on: ubuntu-latest
     permissions:
@@ -69,10 +74,6 @@ jobs:
         id: init
         run: |
           echo "---env variables---"
-          export ARM_CLIENT_ID="${{ secrets.CLIENT_ID }}"
-          export ARM_CLIENT_SECRET="${{ secrets.PASSWORD }}"
-          export ARM_TENANT_ID="${{ secrets.TENANT }}"
-          export ARM_SUBSCRIPTION_ID="${{ secrets.SUBSCRIPTION_ID }}"
           echo $ARM_CLIENT_ID
           for DIR in ${{ steps.directories.outputs.dirs }}; do
             echo "Dir to init: $DIR"
