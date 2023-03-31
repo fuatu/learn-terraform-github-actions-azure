@@ -1,32 +1,6 @@
 # Copyright (c) HashiCorp, Inc.
 # SPDX-License-Identifier: MPL-2.0
 
-terraform {
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "4.52.0"
-    }
-    random = {
-      source  = "hashicorp/random"
-      version = "3.4.3"
-    }
-  }
-  required_version = ">= 1.1.0"
-
-  cloud {
-    organization = "testimg"
-
-    workspaces {
-      name = "learn-terraform-github-actions-azure"
-    }
-  }
-}
-
-provider "azurerm" {
-  features {}
-}
-
 resource "azurerm_resource_group" "rg" {
   name     = "fuat-terraform-experiment2"
   location = "East US"
@@ -101,5 +75,5 @@ resource "azurerm_linux_virtual_machine" "vm" {
     version   = "20.04.202303220"
   }
 
-  computer_name = "terraformvm-testx2"
+  computer_name = "terraformvm-test2"
 }
